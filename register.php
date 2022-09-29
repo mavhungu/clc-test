@@ -1,5 +1,26 @@
 <?php
 require_once('constant.php');
+echo <<<_END
+  <script>
+    function checkUser(user)
+    {
+      if (user.value == '')
+      {
+        $('#used').html('&nbsp;')
+        return
+      }
+      $.post
+      (
+        'functions/checkuser.php',
+        { user : user.value },
+        function(data)
+        {
+          $('#used').html(data)
+        }
+      )
+    }
+  </script>  
+_END;
 ?>
 
 <!DOCTYPE html>
@@ -12,34 +33,8 @@ require_once('constant.php');
   <link rel="stylesheet" href="assets/css/normalize.css" type="text/css">
   <link rel="stylesheet" href="assets/css/styles.css" type="text/css">
   <script src="components/jquery/jquery-3.2.1.min.js"></script>
-  <script>
-    $(document).ready(function(e) {
-      $("#registerForm").on('submit', (function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: "functions/register.php",
-          type: "POST",
-          dataType: 'json',
-          data: {
-            "fname": $('input[name="firstName"]').val(),
-            "lname": $('input[name="lastName"]').val(),
-            "uname": $('input[name="userName"]').val(),
-            "password": $('input[name="userPassword"]').val(),
-            "g-recaptcha-response": $('textarea[id="g-recaptcha-response"]').val()
-          },
-          success: function(response) {
-            if (response.type == "error") {
-              $("#mail-status").attr("class", "error");
-            } else if (response.type == "message") {
-              $("#mail-status").attr("class", "success");
-            }
-            $("#mail-status").html(response.text);
-          },
-          error: function() {}
-        });
-      }));
-    });
-  </script>
+  <script src="assets/js/script.js"></script>
+
   <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 
@@ -59,18 +54,20 @@ require_once('constant.php');
 
     <div class="form-row">
       <label for="userName" class="form-label">User name</label>
-      <input type="text" id="userName" class="form-input" placeholder="Enter your username" name="userName" required>
+      <input type="text" id="userName" class="form-input" placeholder="Enter your username" onBlur='checkUser(this)' value="<?php $user ?>" name=" userName" required>
+      <label></label>
+      <div id='used'>&nbsp;</div>
     </div>
     <div class="form-row">
       <label for="userPassword" class="form-label">Password</label>
-      <input type="password" id="userPassword" class="form-input" placeholder="Enter your password" name="userPassword" required>
+      <input type="password" id="userPassword" class="form-input" maxLength="8" minlength="8" placeholder="Enter your password" name="userPassword" required>
     </div>
 
     <div class="g-recaptcha" data-sitekey="<?php echo SITE_KEY; ?>"></div>
-    <div id="mail-status"></div>
+    <div id="status-response"></div>
 
     <button type="submit" class="btn btn-block" id="send-message" style="clear:both;">Register</button>
-    <div className='col text-center mt-4'>
+    <div className='col text-center mt-4' style="margin: top 5px;">
       <label>Have an account?
         <a href='login.php' type='button' className='fw-bold'>Login</a>
       </label>

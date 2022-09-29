@@ -316,5 +316,22 @@ max-width: 400px;
     font-family: "Georgia", Times, serif;
     color: rgb(40, 40, 40);
   }
-  .error{background-color: #F7902D;  margin-bottom: 40px;}
-  .success{background-color: #48e0a4; }
+  .error{
+    background-color: #f85a676b;
+    align-items: center;
+    justify-content:center;
+  }
+  .success{
+    background-color: #5df5fa77;
+    align-items: center;
+    justify-content:center; 
+  }
+  .taken {
+    color:red;
+  }
+  .available {
+    color:green;
+  }
+  #used {
+    margin-top:5px;
+  }

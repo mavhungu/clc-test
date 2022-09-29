@@ -32,10 +32,8 @@ if ($_POST) {
       }
     }
   } catch (PDOException $e) {
-    //$output['error'] = true;
-    $output = json_encode(array('type' => 'error', 'text' => 'Incorrect Credentials')); //$e->getMessage();
+    $output = json_encode(array('type' => 'error', 'text' => 'Incorrect Credentials'));
     die($output);
-    //echo "There is some problem in connection: " . $e->getMessage();
   }
 
 
